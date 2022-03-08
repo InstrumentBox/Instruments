@@ -46,7 +46,7 @@ final class TaskInstrumentsTestCase: XCTestCase {
       } catch let error as ServiceError {
          XCTAssertEqual(error, .thrown)
       } catch {
-         XCTFail("Unexpected error thrown")
+         XCTFail("Unexpected error thrown \(error)")
       }
    }
 
