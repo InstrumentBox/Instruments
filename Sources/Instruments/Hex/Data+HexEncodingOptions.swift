@@ -1,5 +1,5 @@
 //
-//  Data+Instruments.swift
+//  Data+HexEncodingOptions.swift
 //
 //  Copyright © 2022 Aleksei Zaikin.
 //
@@ -37,14 +37,5 @@ extension Data {
       // MARK: - Predefined
 
       public static let uppercased = HexStringOptions(rawValue: 1 << 0)
-   }
-}
-
-extension Data {
-   public func hexString(options: HexStringOptions = []) -> String {
-      reduce(into: "") { hex, byte in
-         let format = String(format: "%02\(options.contains(.uppercased) ? "X" : "x")", byte)
-         hex.append(format)
-      }
    }
 }

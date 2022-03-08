@@ -1,5 +1,5 @@
 //
-//  Data+InstrumentsTestCase.swift
+//  Data+Hex.swift
 //
 //  Copyright © 2022 Aleksei Zaikin.
 //
@@ -22,17 +22,13 @@
 //  THE SOFTWARE.
 //
 
-import Instruments
-import XCTest
+import Foundation
 
-final class DataInstrumentsTestCase: XCTestCase {
-   func test_data_isConvertedIntoLowercasedHexString() {
-      let data = Data([0x00, 0x1a, 0x2b, 0x3c])
-      XCTAssertEqual(data.hexString(), "001a2b3c")
-   }
-
-   func test_data_isConvertedIntoUppercasedHexString() {
-      let data = Data([0x00, 0x1a, 0x2b, 0x3c])
-      XCTAssertEqual(data.hexString(options: [.uppercased]), "001A2B3C")
+extension Data {
+   public func hexString(options: HexStringOptions = []) -> String {
+      reduce(into: "") { hex, byte in
+         let format = String(format: "%02\(options.contains(.uppercased) ? "X" : "x")", byte)
+         hex.append(format)
+      }
    }
 }
