@@ -1,5 +1,5 @@
 //
-//  Data+HexEncodingOptions.swift
+//  Data+HexStringOptions.swift
 //
 //  Copyright © 2022 Aleksei Zaikin.
 //
