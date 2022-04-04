@@ -50,7 +50,11 @@ public struct HexStringDataDecoder {
       let step = 2
       for offset in stride(from: 0, through: hexString.count - step, by: step) {
          let startIndex = hexString.index(hexString.startIndex, offsetBy: offset)
-         let endIndex = hexString.index(hexString.startIndex, offsetBy: offset + 1)
+         let endIndex = hexString.index(
+            hexString.startIndex,
+            offsetBy: offset + step - 1,
+            limitedBy: hexString.endIndex
+         ) ?? hexString.endIndex
          let byteString = String(hexString[startIndex...endIndex])
          if let byte = UInt8(byteString, radix: 16) {
             data.append(byte)
