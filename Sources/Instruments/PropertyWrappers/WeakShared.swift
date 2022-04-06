@@ -22,6 +22,8 @@
 //  THE SOFTWARE.
 //
 
+/// `WeakShared` is a property wrapper for references types that allow you to share the same
+/// instance while reference exists. If there's no reference, the new object is created.
 @propertyWrapper
 public final class WeakShared<Instance: AnyObject> {
    private weak var instance: Instance?
@@ -29,16 +31,30 @@ public final class WeakShared<Instance: AnyObject> {
 
    // MARK: - Init
 
+   /// Creates and returns new instance of `WeakShared` property wrapper with a given instance
+   /// factory.
+   ///
+   /// - Parameters:
+   ///   - instanceFactory: A factory that is used to create new instance if there's no existing
+   ///                      reference.
    public init(instanceFactory: @escaping () -> Instance) {
       self.instanceFactory = instanceFactory
    }
 
+   /// Creates and returns new instance of `WeakShared` property wrapper with a given instance
+   /// factory.
+   ///
+   /// - Parameters:
+   ///   - instance: An auto closure that returns a newly created instance if there's no existing
+   ///               reference.
    public convenience init(instance: @autoclosure @escaping () -> Instance) {
       self.init(instanceFactory: instance)
    }
 
    // MARK: - Property Wrapper
 
+   /// Accessor that returns existing instance, or creates new one using instanceFactory passed to
+   /// initializer.
    public var wrappedValue: Instance {
       if let instance = instance {
          return instance
