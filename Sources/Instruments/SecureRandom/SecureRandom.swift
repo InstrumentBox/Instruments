@@ -24,13 +24,17 @@
 
 import Foundation
 
+/// An error that can be thrown by `SecureRandom` if something goes wrong.
 public enum SecureRandomError: Error {
+   /// An error thrown if bytes or number can't be generated.
    case cannotGenerate
 }
 
+/// An object that provides you functionality to generate bytes or numbers in a secure way.
 public final class SecureRandom {
    // MARK: - Init
 
+   /// Creates and returns a new instance of `SecureRandom`.
    public init() { }
 
    // MARK: - Generation
