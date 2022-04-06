@@ -24,7 +24,9 @@
 
 import Darwin
 
+/// Scope for functions to work with debugger.
 public enum LLDB {
+   /// A function you may to call to deny debugger attach to an app process.
    public static func preventFromAttaching() {
       let PT_DENY_ATTACH: CInt = 31
 
@@ -42,6 +44,9 @@ public enum LLDB {
       dlclose(handle)
    }
 
+   /// Checks if debugger is attached to an app process.
+   ///
+   /// - Returns: `true` if debugger is attached. Otherwise `false`.
    public static func isAttached() -> Bool {
       var info = kinfo_proc()
 
