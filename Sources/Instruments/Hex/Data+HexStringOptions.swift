@@ -25,17 +25,24 @@
 import Foundation
 
 extension Data {
+   /// Options for converting `Data` to hexadecimal string.
    public struct HexStringOptions: OptionSet {
+      /// The corresponding value of the raw type.
       public var rawValue: Int
 
       // MARK: - Init
 
+      /// Creates a set of hex string options from an integer that represents those options.
+      ///
+      /// - Parameters:
+      ///   - rawValue: An option set of hex string options defined by this type.
       public init(rawValue: Int) {
          self.rawValue = rawValue
       }
 
       // MARK: - Predefined
 
+      /// Specifies if the resulting string should be uppercased.
       public static let uppercased = HexStringOptions(rawValue: 1 << 0)
    }
 }

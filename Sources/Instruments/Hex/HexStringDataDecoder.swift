@@ -24,11 +24,20 @@
 
 import Foundation
 
+/// An error that is thrown when `HexStringDataDecoder` fails.
 public enum HexStringDataDecoderError: Error, Equatable {
+   /// Thrown if unexpected byte is found. E.g. `abxycd` has unexpected byte `xy`.
    case unexpectedByte(String, location: Int)
 
    // MARK: - Equatable
 
+   /// Compares two instances of `HexStringDataDecoderError`. Both value and location of byte MUST
+   /// be equal.
+   ///
+   /// - Parameters:
+   ///   - lhs: The first instance to compare.
+   ///   - rhs: The second instance to compare.
+   /// - Returns: `true` if instances are equal. Otherwise `false`.
    public static func ==(lhs: HexStringDataDecoderError, rhs: HexStringDataDecoderError) -> Bool {
       switch (lhs, rhs) {
          case let (.unexpectedByte(lhsByte, lhsLocation), .unexpectedByte(rhsByte, rhsLocation)):
@@ -37,13 +46,24 @@ public enum HexStringDataDecoderError: Error, Equatable {
    }
 }
 
+/// A decoder that takes a hexadecimal string as input and returns an instance of `Data`.
+///
+/// Decoder assumes that each byte is represented as two symbols. For example if you
+/// have a byte with a value of 1, it **MUST** be written as `01`.
 public struct HexStringDataDecoder {
    // MARK: - Init
 
+   /// Creates and returns an instance of `HexStringDataDecoder`.
    public init() { }
 
    // MARK: - Decoding
 
+   /// Decodes a hexadecimal string to a `Data` instance.
+   ///
+   /// - Parameters:
+   ///   - hexString: A hexadecimal string to be decoded.
+   /// - Returns: An instance of `Data` to which string is decoded.
+   /// - Throws: A `HexStringDataDecoderError`.
    public func decode(_ hexString: String) throws -> Data {
       var data = Data()
 

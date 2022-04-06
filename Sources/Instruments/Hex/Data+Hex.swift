@@ -25,6 +25,13 @@
 import Foundation
 
 extension Data {
+   /// Returns data representation in form of hexadecimal string. E.g. if you have `Data` instance
+   /// that contains following bytes: `0xAB`, `0x13`, `0xDE`, this function will return `ab13de`, or
+   /// `AB13DE` if you use `.uppercased` options.
+   ///
+   /// - Parameters:
+   ///   - options: The options to use to create hexadecimal string. Defaults to `[]`.
+   /// - Returns: Hexadecimal string representation.
    public func hexString(options: HexStringOptions = []) -> String {
       reduce(into: "") { hex, byte in
          let format = String(format: "%02\(options.contains(.uppercased) ? "X" : "x")", byte)

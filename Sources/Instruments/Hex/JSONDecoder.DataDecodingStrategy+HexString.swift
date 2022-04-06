@@ -25,6 +25,28 @@
 import Foundation
 
 extension JSONDecoder.DataDecodingStrategy {
+   /// A data decoding strategy that uses `HexStringDataDecoder`.
+   ///
+   /// The following JSON
+   /// ```json
+   /// {
+   ///    "data": "abcdef"
+   /// }
+   /// ```
+   /// can be decoded to
+   ///
+   /// ```swift
+   /// struct SomeObject: Decodable {
+   ///    let data: Data
+   /// }
+   /// ```
+   /// using following `JSONDecoder`
+   ///
+   /// ```swift
+   /// let decoder = JSONDecoder()
+   /// decoder.dataDecodingStrategy = .hexString
+   /// ```
+   /// where `data` property will contain three bytes: `[0xAB, 0xCD, 0xEF]`.
    public static let hexString: JSONDecoder.DataDecodingStrategy = .custom { decoder in
       let container = try decoder.singleValueContainer()
       let hexString = try container.decode(String.self)
