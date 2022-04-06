@@ -1,5 +1,5 @@
 //
-//  BinaryConstructibleTestCase.swift
+//  Int+BytesConstructibleNumber.swift
 //
 //  Copyright © 2022 Aleksei Zaikin.
 //
@@ -22,31 +22,13 @@
 //  THE SOFTWARE.
 //
 
-import Instruments
-import XCTest
-
-final class BinaryConstructibleTestCase: XCTestCase {
-   func test_int_isInitializedFromData_withBigEndianness() {
-      let data = Data([0x00, 0x01])
-      let value = Int(data: data, endianness: .big)
-      XCTAssertEqual(value, 1)
-   }
-
-   func test_int_isInitializedFromData_withLittleEndianness() {
-      let data = Data([0x00, 0x01])
-      let value = Int(data: data, endianness: .little)
-      XCTAssertEqual(value, 256)
-   }
-
-   func test_uint_isInitializedFromData_withBigEndianness() {
-      let data = Data([0x00, 0x01])
-      let value = UInt(data: data, endianness: .little)
-      XCTAssertEqual(value, 256)
-   }
-
-   func test_uint_isInitializedFromData_withLittleEndianness() {
-      let data = Data([0x00, 0x01])
-      let value = UInt(data: data, endianness: .little)
-      XCTAssertEqual(value, 256)
-   }
-}
+extension Int: BytesConstructibleNumber { }
+extension UInt: BytesConstructibleNumber { }
+extension Int8: BytesConstructibleNumber { }
+extension UInt8: BytesConstructibleNumber { }
+extension Int16: BytesConstructibleNumber { }
+extension UInt16: BytesConstructibleNumber { }
+extension Int32: BytesConstructibleNumber { }
+extension UInt32: BytesConstructibleNumber { }
+extension Int64: BytesConstructibleNumber { }
+extension UInt64: BytesConstructibleNumber { }

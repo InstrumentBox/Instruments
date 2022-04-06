@@ -1,5 +1,5 @@
 //
-//  Int+Bytes.swift
+//  BytesConstructibleNumber.swift
 //
 //  Copyright © 2022 Aleksei Zaikin.
 //
@@ -22,13 +22,36 @@
 //  THE SOFTWARE.
 //
 
-extension Int: BinaryConstructible { }
-extension UInt: BinaryConstructible { }
-extension Int8: BinaryConstructible { }
-extension UInt8: BinaryConstructible { }
-extension Int16: BinaryConstructible { }
-extension UInt16: BinaryConstructible { }
-extension Int32: BinaryConstructible { }
-extension UInt32: BinaryConstructible { }
-extension Int64: BinaryConstructible { }
-extension UInt64: BinaryConstructible { }
+import Foundation
+
+public protocol BytesConstructibleNumber {
+   init(data: Data, endianness: Endianness)
+
+   init(bigEndian: Self)
+
+   init(littleEndian: Self)
+}
+
+extension BytesConstructibleNumber {
+   public init(data: Data, endianness: Endianness) {
+      var data = data
+      endianness.prepareBytes(in: &data, with: MemoryLayout<Self>.size)
+      let value = data.withUnsafeBytes { pointer in
+         pointer.load(as: Self.self)
+      }
+      switch endianness {
+         case .big:
+            self.init(bigEndian: value)
+         case .little:
+            self.init(littleEndian: value)
+      }
+   }
+
+   public init(data: Data) {
+      self.init(data: data, endianness: .big)
+   }
+
+   public init(bytes: [UInt8], endianness: Endianness = .big) {
+      self.init(data: Data(bytes), endianness: endianness)
+   }
+}

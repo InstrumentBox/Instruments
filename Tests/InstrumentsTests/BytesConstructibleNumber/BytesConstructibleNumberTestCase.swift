@@ -1,5 +1,5 @@
 //
-//  BinaryConstructible.swift
+//  BytesConstructibleNumberTestCase.swift
 //
 //  Copyright © 2022 Aleksei Zaikin.
 //
@@ -22,36 +22,31 @@
 //  THE SOFTWARE.
 //
 
-import Foundation
+import Instruments
+import XCTest
 
-public protocol BinaryConstructible {
-   init(data: Data, endianness: Endianness)
-
-   init(bigEndian: Self)
-
-   init(littleEndian: Self)
-}
-
-extension BinaryConstructible {
-   public init(data: Data, endianness: Endianness) {
-      var data = data
-      endianness.prepareBytes(in: &data, with: MemoryLayout<Self>.size)
-      let value = data.withUnsafeBytes { pointer in
-         pointer.load(as: Self.self)
-      }
-      switch endianness {
-         case .big:
-            self.init(bigEndian: value)
-         case .little:
-            self.init(littleEndian: value)
-      }
+final class BytesConstructibleNumberTestCase: XCTestCase {
+   func test_int_isInitializedFromData_withBigEndianness() {
+      let data = Data([0x00, 0x01])
+      let value = Int(data: data, endianness: .big)
+      XCTAssertEqual(value, 1)
    }
 
-   public init(data: Data) {
-      self.init(data: data, endianness: .big)
+   func test_int_isInitializedFromData_withLittleEndianness() {
+      let data = Data([0x00, 0x01])
+      let value = Int(data: data, endianness: .little)
+      XCTAssertEqual(value, 256)
    }
 
-   public init(bytes: [UInt8], endianness: Endianness = .big) {
-      self.init(data: Data(bytes), endianness: endianness)
+   func test_uint_isInitializedFromData_withBigEndianness() {
+      let data = Data([0x00, 0x01])
+      let value = UInt(data: data, endianness: .little)
+      XCTAssertEqual(value, 256)
+   }
+
+   func test_uint_isInitializedFromData_withLittleEndianness() {
+      let data = Data([0x00, 0x01])
+      let value = UInt(data: data, endianness: .little)
+      XCTAssertEqual(value, 256)
    }
 }
