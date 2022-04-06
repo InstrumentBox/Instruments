@@ -24,8 +24,12 @@
 
 import Foundation
 
+/// An order of bytes which can be either `BE` or `LE`.
 public enum Endianness {
+   /// An order of bytes from the most significant to the least significant one.
    case big
+
+   /// An order of bytes from the least significant to the most significant one.
    case little
 
    // MARK: - Bytes Alignment
