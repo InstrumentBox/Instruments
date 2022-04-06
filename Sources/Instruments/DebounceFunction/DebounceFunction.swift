@@ -24,10 +24,15 @@
 
 import Foundation
 
+/// A global configuration of `DebounceFunction`.
 public enum DebounceFunctionConfiguration {
+   /// A global debounce interval which is used as default value every time you create an instance
+   /// of `DebounceFunction`. Defaults to `0.5`.
    public static var debounceInterval: TimeInterval = 0.5
 }
 
+/// A function that allows you to debounce some work. It invokes action after a certain amount time
+/// if there's no new calls during this time. Can be called dynamically due to `@dynamicCallable`.
 @dynamicCallable
 public final class DebounceFunction<Argument> {
    private var timer: Timer?
@@ -37,6 +42,12 @@ public final class DebounceFunction<Argument> {
 
    // MARK: - Init
 
+   /// Creates and returns a new instance of `DebounceFunction` with a given parameters.
+   ///
+   /// - Parameters:
+   ///   - debounceInterval: An interval after which action is invoked. Defaults
+   ///                       to `DebounceFunctionConfiguration.debounceInterval`.
+   ///   - action: An action to be invoked after `debounceInterval` has elapsed.
    public init(
       debounceInterval: TimeInterval = DebounceFunctionConfiguration.debounceInterval,
       action: @escaping (Argument) -> Void
@@ -51,6 +62,7 @@ public final class DebounceFunction<Argument> {
 
    // MARK: - Cancellation
 
+   /// Cancels the scheduled invocation of an action.
    public func cancel() {
       timer?.cancel()
       timer = nil
@@ -58,6 +70,11 @@ public final class DebounceFunction<Argument> {
 
    // MARK: - Calling
 
+   /// Cancels previous call if possible and schedules new invocation of action after debounce
+   /// interval.
+   ///
+   /// - Parameters:
+   ///   - argument: Argument to pass to an action.
    public func call(with argument: Argument) {
       cancel()
 
@@ -67,23 +84,34 @@ public final class DebounceFunction<Argument> {
       timer?.resume()
    }
 
+   /// Cancels previous call if possible and schedules new invocation of an action after debounce
+   /// interval.
    public func call() where Argument == Void {
       call(with: ())
    }
 
    // MARK: - Firing
 
-   public func fire(with parameter: Argument) {
+   /// Cancels previous call if possible and invokes action immediately.
+   ///
+   /// - Parameters:
+   ///   - argument: Argument to pass to an action.
+   public func fire(with argument: Argument) {
       cancel()
-      action(parameter)
+      action(argument)
    }
 
+   /// Cancels previous call if possible and invokes action immediately.
    public func fire() where Argument == Void {
       fire(with: ())
    }
 
    // MARK: - Dynamic Callable
 
+   /// Invokes `call(with:)` with the first passed argument. Adoption of `@dynamicCallable`.
+   ///
+   /// - Parameters:
+   ///   - args: An array of arguments where the first argument will be passed to an action.
    public func dynamicallyCall(withArguments args: [Argument]) {
       if let arg = args.first {
          call(with: arg)
