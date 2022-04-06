@@ -25,8 +25,8 @@
 import Foundation
 
 extension DateFormatter {
-   /// Create and returns `DateFormatter` with following format: `"yyyy-MM-dd'T'HH:mm:ssZZ"`. Also
-   /// it uses Gregorian calendar and en_US_POSIX locale.
+   /// Creates and returns `DateFormatter` with following format: `"yyyy-MM-dd'T'HH:mm:ssZZ"`. It
+   /// uses Gregorian calendar and en_US_POSIX locale.
    public static var iso8601: DateFormatter {
       let dateFormatter = DateFormatter()
       dateFormatter.locale = Locale(identifier: "en_US_POSIX")

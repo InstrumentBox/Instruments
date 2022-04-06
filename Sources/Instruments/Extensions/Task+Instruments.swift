@@ -25,6 +25,17 @@
 import Foundation
 
 extension Task where Failure == Error {
+   /// Creates and returns an asynchronous task that tries to execute operation a given number of
+   /// times until it completes successfully. If the number of attempts is exceeded, it throws
+   /// latest error.
+   ///
+   /// - Parameters:
+   ///   - retriesCount: Maximum number of attempts to give a task a chance to complete
+   ///                   successfully. Defaults to 3.
+   ///   - retryDelay: An interval between attempts. Defaults to `nil`.
+   ///   - priority: The priority of the task. Defaults to `nil`.
+   ///   - operation: The operation to perform.
+   /// - Returns: A reference to the task.
    @discardableResult
    public static func retrying(
       retriesCount: Int = 3,

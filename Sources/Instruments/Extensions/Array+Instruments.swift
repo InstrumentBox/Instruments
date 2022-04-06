@@ -23,6 +23,16 @@
 //
 
 extension Array {
+   /// Batches an array by a given size.
+   ///
+   /// ```swift
+   /// [1, 2, 3, 4, 5, 6].batch(by: 3) // [[1, 2, 3], [4, 5, 6]]
+   /// [1, 2, 3, 4, 5].batch(by: 3) // [[1, 2, 3], [4, 5]]
+   /// ```
+   ///
+   /// - Parameters:
+   ///   - size: Number of elements each batch contains. Last batch can contain less elements.
+   /// - Returns: Array of arrays where each contains the `size` number of elements.
    public func batch(by size: Int) -> [[Element]] {
       var batches: [[Element]] = []
       for idx in stride(from: startIndex, to: endIndex, by: size) {
