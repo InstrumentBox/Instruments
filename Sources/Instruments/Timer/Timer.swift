@@ -31,6 +31,8 @@ extension Timer {
    }
 }
 
+/// A timer that fires after a certain time interval has elapsed, invoking a specified action. Built
+/// on top of `DispatchSourceTimer`.
 public final class Timer {
    private var timer: DispatchSourceTimer?
 
@@ -43,13 +45,24 @@ public final class Timer {
 
    // MARK: - Init
 
+   /// Initializes a timer object with the specified time interval and block.
+   ///
+   /// - Parameters:
+   ///   - interval: The number of seconds between firings of the timer. If interval is less than or
+   ///               equal to 0.0, this method chooses the nonnegative value of 0.0001 seconds
+   ///               instead.
+   ///   - repeats: If `true`, the timer will repeatedly reschedule itself until invalidated. If
+   ///              `false`, the timer will be invalidated after it fires.
+   ///   - queue: The `DispatchQueue` to which to execute action handler.
+   ///   - action: An action to be executed when the timer fires. The action has neither parameters
+   ///             nor return value.
    public init(
       interval: TimeInterval,
       repeats: Bool,
       queue: DispatchQueue? = nil,
       action: @escaping () -> Void
    ) {
-      self.interval = interval
+      self.interval = max(interval, 0.0001)
       self.repeats = repeats
       self.queue = queue
       self.action = action
@@ -65,6 +78,7 @@ public final class Timer {
 
    // MARK: - Running
 
+   /// Resumes the timer.
    public func resume() {
       guard state == .notRunning else {
          return
@@ -79,6 +93,7 @@ public final class Timer {
       timer?.resume()
    }
 
+   /// Suspends the timer.
    public func suspend() {
       guard state == .running else {
          return
@@ -88,6 +103,7 @@ public final class Timer {
       timer?.suspend()
    }
 
+   /// Asynchronously cancels the timer, preventing any further invocation of its action handler.
    public func cancel() {
       guard state == .running else {
          return
