@@ -5,10 +5,5 @@
 [![SPM: Compatible](https://img.shields.io/badge/SPM-Compatible-4BC51D.svg?style=flat)](https://swift.org/package-manager/)
 [![License: MIT](http://img.shields.io/badge/License-MIT-lightgray.svg?style=flat)](https://github.com/InstrumentBox/Instruments/blob/main/LICENSE)
 
-*Instruments* is a package that provides you with set of tools that may be handy for Swift 
-development.
-
-### Features
-
-- [x] [Well documented](https://instrumentbox.gihub.io/instruments)
-- [x] No dependencies
+*Instruments* is a [well documented](https://instrumentbox.github.io/Instruments/documentation/instruments/) 
+package that provides you with set of tools that may be handy for Swift development.
