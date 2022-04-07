@@ -22,6 +22,8 @@ Pods/
 # BUILD.sh
 *.xcframework
 
+# DOCBUILD.sh
+.docbuild
+
 # Xcode
 xcuserdata/
-*.doccarchive
