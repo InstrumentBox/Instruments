@@ -28,14 +28,23 @@ if [ -d ".docbuild" ]; then
     rm -rf .docbuild
 fi
 
+PACKAGE_NAME="Instruments"
+
 xcodebuild docbuild \
--scheme Instruments \
+-scheme $PACKAGE_NAME \
 -derivedDataPath .docbuild \
 -destination 'platform=iOS Simulator,name=iPhone 13 mini'
 
-DOC_PATH=$(find .docbuild -type d -name "*.doccarchive")
+DOC_PATH=$(find .docbuild -type d -name "$PACKAGE_NAME.doccarchive")
 
-$(xcrun --find docc) process-archive \
-transform-for-static-hosting $DOC_PATH \
---output-path docs \
---hosting-base-path Instruments
+echo "Processing documentation archive to host on GitHub Pages..."
+
+if [ -d $DOC_PATH ]; then
+   $(xcrun --find docc) process-archive \
+   transform-for-static-hosting $DOC_PATH \
+   --output-path docs \
+   --hosting-base-path $PACKAGE_NAME
+   echo "$(tput setaf 2)** PROCESSING DOCUMENTATION SUCCEEDED **\n"
+else
+   echo "$(tput setaf 1)** CAN'T FIND ${PACKAGE_NAME^^} DOCUMENTATION ARCHIVE **\n"
+fi
