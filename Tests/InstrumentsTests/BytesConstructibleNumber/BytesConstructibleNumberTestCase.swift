@@ -40,8 +40,8 @@ final class BytesConstructibleNumberTestCase: XCTestCase {
 
    func test_uint_isInitializedFromData_withBigEndianness() {
       let data = Data([0x00, 0x01])
-      let value = UInt(data: data, endianness: .little)
-      XCTAssertEqual(value, 256)
+      let value = UInt(data: data, endianness: .big)
+      XCTAssertEqual(value, 1)
    }
 
    func test_uint_isInitializedFromData_withLittleEndianness() {

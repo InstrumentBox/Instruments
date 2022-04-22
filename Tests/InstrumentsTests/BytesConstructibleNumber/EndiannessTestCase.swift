@@ -46,14 +46,14 @@ final class EndiannessTestCase: XCTestCase {
       XCTAssertEqual(data, Data([0x00, 0x01, 0x02, 0x03]))
    }
 
-   func test_bigEndianness_addBytesInTheBeginning_ifLessThanSize() {
+   func test_bigEndianness_addsBytesInTheBeginning_ifLessThanSize() {
       let endianness: Endianness = .big
       var data = Data([0x01, 0x02, 0x03])
       endianness.prepareBytes(in: &data, with: size)
       XCTAssertEqual(data, Data([0x00, 0x01, 0x02, 0x03]))
    }
 
-   func test_littleEndianness_addBytesInTheEnd_ifLessThanSize() {
+   func test_littleEndianness_addsBytesInTheEnd_ifLessThanSize() {
       let endianness: Endianness = .little
       var data = Data([0x01, 0x02, 0x03])
       endianness.prepareBytes(in: &data, with: size)
