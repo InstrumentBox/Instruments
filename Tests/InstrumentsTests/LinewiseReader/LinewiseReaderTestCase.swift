@@ -1,7 +1,5 @@
-// swift-tools-version:5.6
-
 //
-//  Package.swift
+//  LinewiseReaderTestCase.swift
 //
 //  Copyright © 2022 Aleksei Zaikin.
 //
@@ -24,29 +22,31 @@
 //  THE SOFTWARE.
 //
 
+import Instruments
+import XCTest
 
-import PackageDescription
-
-let package = Package(
-   name: "Instruments",
-   platforms: [
-      .iOS(.v13),
-      .macOS(.v10_15),
-      .macCatalyst(.v13),
-      .tvOS(.v13),
-      .watchOS(.v6)
-   ],
-   products: [
-      .library(name: "Instruments", targets: ["Instruments"])
-   ],
-   targets: [
-      .target(name: "Instruments"),
-      .testTarget(
-         name: "InstrumentsTests",
-         dependencies: ["Instruments"],
-         resources: [
-            .process("LinewiseReader/Data.txt")
-         ]
+final class LinewiseReaderTestCase: XCTestCase {
+   func test_linewiseReader_readsFileLineByLine_asData() throws {
+      let fileURL = try XCTUnwrap(
+         Bundle.module.url(forResource: "Data", withExtension: "txt")
       )
-   ]
-)
+      let reader = try XCTUnwrap(LinewiseReader(fileURL: fileURL))
+      var lines: [Data] = []
+      while let line: Data = reader.readLine() {
+         lines.append(line)
+      }
+      XCTAssertEqual(lines, [Data([0x30]), Data([0x31]), Data([0x32]), Data([0x33])])
+   }
+
+   func test_linewiseReader_readsFileLineByLine_asString() throws {
+      let fileURL = try XCTUnwrap(
+         Bundle.module.url(forResource: "Data", withExtension: "txt")
+      )
+      let reader = try XCTUnwrap(LinewiseReader(fileURL: fileURL))
+      var lines: [String] = []
+      while let line: String = reader.readLine() {
+         lines.append(line)
+      }
+      XCTAssertEqual(lines, ["0", "1", "2", "3"])
+   }
+}

@@ -22,4 +22,5 @@ development.
 - ``SecureRandom``
 - ``SecureRandomError``
 - ``Timer``
+- ``LinewiseReader``
 - <doc:Extensions>
