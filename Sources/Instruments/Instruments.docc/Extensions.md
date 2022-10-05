@@ -41,6 +41,17 @@ string.removeCharacters(in: .decimalDigits)
 // string is "abc"
 ```
 
+```swift
+let string = "foo_bar_baz".removingPrefix("foo_")
+// Returns "bar_baz"
+```
+
+```swift
+var string = "foo_bar_baz"
+string.removePrefix("foo_")
+// string is "bar_baz"
+```
+
 ## Task
 
 ```swift

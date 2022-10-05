@@ -64,4 +64,25 @@ extension String {
    public mutating func removeCharacters(in set: CharacterSet) {
       self = removingCharacters(in: set)
    }
+
+   /// Returns new string by removing given prefix.
+   ///
+   /// - Parameters:
+   ///   - prefix: A prefix to be removed from string.
+   /// - Returns: A string without given prefix.
+   public func removingPrefix(_ prefix: String) -> String {
+      guard hasPrefix(prefix) else {
+         return self
+      }
+
+      return String(dropFirst(prefix.count))
+   }
+
+   /// Removes given prefix from string.
+   ///
+   /// - Parameters:
+   ///   - prefix: A prefix to be removed from string.
+   public mutating func removePrefix(_ prefix: String) {
+      self = removingPrefix(prefix)
+   }
 }

@@ -41,4 +41,10 @@ final class StringInstrumentsTestCase: XCTestCase {
       string.removeCharacters(in: .decimalDigits)
       XCTAssertEqual(string, "hello world")
    }
+
+   func test_string_removesPrefix() {
+      var string = "foo_bar_baz"
+      string.removePrefix("foo_")
+      XCTAssertEqual(string, "bar_baz")
+   }
 }
