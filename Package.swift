@@ -45,7 +45,7 @@ let package = Package(
          name: "InstrumentsTests",
          dependencies: ["Instruments"],
          resources: [
-            .process("LinewiseReader/Data.txt")
+            .process("LineByLineReader/Data.txt")
          ]
       )
    ]

@@ -1,5 +1,5 @@
 //
-//  LinewiseReader.swift
+//  LineByLineReader.swift
 //
 //  Copyright © 2022 Aleksei Zaikin.
 //
@@ -24,8 +24,11 @@
 
 import Foundation
 
+@available(*, deprecated, renamed: "LineByLineReader", message: "use `LineByLineReader` instead")
+public typealias LinewiseReader = LineByLineReader
+
 /// A reader that reads file line by line by using given delimiter.
-public final class LinewiseReader {
+public class LineByLineReader {
    /// A delimiter to use to break lines. Defaults to `\n`.
    public var lineDelimiter = "\n"
 
@@ -42,7 +45,7 @@ public final class LinewiseReader {
 
    // MARK: - Init
 
-   /// Creates and returns new instance of LinewiseReader with given parameters.
+   /// Creates and returns new instance of LineByLineReader with given parameters.
    ///
    /// - Parameters:
    ///   - fileURL: A URL where file to read can be found.
