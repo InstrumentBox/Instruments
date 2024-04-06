@@ -25,7 +25,7 @@
 import Instruments
 import XCTest
 
-final class HexStringDataDecoderTestCase: XCTestCase {
+class HexStringDataDecoderTestCase: XCTestCase {
    func test_hexStringDataDecoder_decodesFromHexString() throws {
       let decoder = HexStringDataDecoder()
       let data = try decoder.decode("abcdef01")

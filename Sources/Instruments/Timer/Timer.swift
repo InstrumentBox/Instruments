@@ -33,7 +33,7 @@ extension Timer {
 
 /// A timer that fires after a certain time interval has elapsed, invoking a specified action. Built
 /// on top of `DispatchSourceTimer`.
-public final class Timer {
+public class Timer {
    private var timer: DispatchSourceTimer?
 
    private var state: State = .notRunning

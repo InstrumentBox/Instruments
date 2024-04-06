@@ -25,7 +25,7 @@
 import Instruments
 import XCTest
 
-final class LineByLineReaderTestCase: XCTestCase {
+class LineByLineReaderTestCase: XCTestCase {
    func test_lineByLineReader_readsFileLineByLine_asData() throws {
       let fileURL = try XCTUnwrap(
          Bundle.module.url(forResource: "Data", withExtension: "txt")

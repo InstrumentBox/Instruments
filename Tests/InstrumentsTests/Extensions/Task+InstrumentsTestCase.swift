@@ -25,7 +25,7 @@
 import Instruments
 import XCTest
 
-final class TaskInstrumentsTestCase: XCTestCase {
+class TaskInstrumentsTestCase: XCTestCase {
    func test_task_retriesOperationUntilSuccess() async throws {
       let service = Service(throwsError: false)
       let task = Task.retrying {

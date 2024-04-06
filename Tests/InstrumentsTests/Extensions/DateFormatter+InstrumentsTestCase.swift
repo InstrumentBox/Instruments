@@ -25,7 +25,7 @@
 import Instruments
 import XCTest
 
-final class DateFormatterInstrumentsTestCase: XCTestCase {
+class DateFormatterInstrumentsTestCase: XCTestCase {
    func test_formatter_returnsCorrectString() {
       let date = Date(timeIntervalSince1970: 0)
       let expectedString = "1970-01-01T03:00:00+0300"

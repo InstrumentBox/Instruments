@@ -31,7 +31,7 @@ public enum SecureRandomError: Error {
 }
 
 /// An object that provides you functionality to generate bytes or numbers in a secure way.
-public final class SecureRandom {
+public class SecureRandom {
    // MARK: - Init
 
    /// Creates and returns a new instance of `SecureRandom`.

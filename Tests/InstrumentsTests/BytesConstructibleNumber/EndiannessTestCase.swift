@@ -27,7 +27,7 @@ import Instruments
 
 import XCTest
 
-final class EndiannessTestCase: XCTestCase {
+class EndiannessTestCase: XCTestCase {
    private let size = 4
 
    // MARK: - Test Cases

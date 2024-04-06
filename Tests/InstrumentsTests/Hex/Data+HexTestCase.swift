@@ -25,7 +25,7 @@
 import Instruments
 import XCTest
 
-final class DataHexTestCase: XCTestCase {
+class DataHexTestCase: XCTestCase {
    func test_data_isConvertedIntoLowercasedHexString() {
       let data = Data([0x00, 0x1a, 0x2b, 0x3c])
       XCTAssertEqual(data.hexString(), "001a2b3c")

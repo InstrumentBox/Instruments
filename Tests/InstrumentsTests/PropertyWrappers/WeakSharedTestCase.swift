@@ -25,7 +25,7 @@
 import Instruments
 import XCTest
 
-final class WeakSharedTestCase: XCTestCase {
+class WeakSharedTestCase: XCTestCase {
    func test_weakShared_returnsTheSameObject_whenRefExists() {
       let instance1: TestWeakSingleton = .shared
       let instance2: TestWeakSingleton = .shared
@@ -45,7 +45,7 @@ final class WeakSharedTestCase: XCTestCase {
    }
 }
 
-private final class TestWeakSingleton {
+private class TestWeakSingleton {
    @WeakShared(instance: TestWeakSingleton())
    static var shared
 

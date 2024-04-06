@@ -25,7 +25,7 @@
 import Instruments
 import XCTest
 
-final class DebounceFunctionTestCase: XCTestCase {
+class DebounceFunctionTestCase: XCTestCase {
    func test_debounceFunction_invokesActionAfterDebounceInterval() {
       let expectation = XCTestExpectation()
       let function = DebounceFunction<Void> {

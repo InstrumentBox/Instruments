@@ -25,7 +25,7 @@
 import Instruments
 import XCTest
 
-final class StringInstrumentsTestCase: XCTestCase {
+class StringInstrumentsTestCase: XCTestCase {
    func test_string_isEncodedIntoBase64() {
       let encoded = "hello world".base64Encoded()
       XCTAssertEqual(encoded, "aGVsbG8gd29ybGQ=")
