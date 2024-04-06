@@ -33,7 +33,7 @@ PACKAGE_NAME="Instruments"
 xcodebuild docbuild \
 -scheme $PACKAGE_NAME \
 -derivedDataPath .docbuild \
--destination 'platform=iOS Simulator,name=iPhone 14 Pro'
+-destination 'platform=iOS Simulator,name=iPhone 15 Pro'
 
 DOC_PATH=$(find .docbuild -type d -name "$PACKAGE_NAME.doccarchive")
 
