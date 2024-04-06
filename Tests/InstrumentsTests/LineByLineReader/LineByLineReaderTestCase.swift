@@ -25,12 +25,12 @@
 import Instruments
 import XCTest
 
-final class LinewiseReaderTestCase: XCTestCase {
-   func test_linewiseReader_readsFileLineByLine_asData() throws {
+final class LineByLineReaderTestCase: XCTestCase {
+   func test_lineByLineReader_readsFileLineByLine_asData() throws {
       let fileURL = try XCTUnwrap(
          Bundle.module.url(forResource: "Data", withExtension: "txt")
       )
-      let reader = try XCTUnwrap(LinewiseReader(fileURL: fileURL))
+      let reader = try XCTUnwrap(LineByLineReader(fileURL: fileURL))
       var lines: [Data] = []
       while let line: Data = reader.readLine() {
          lines.append(line)
@@ -38,11 +38,11 @@ final class LinewiseReaderTestCase: XCTestCase {
       XCTAssertEqual(lines, [Data([0x30]), Data([0x31]), Data([0x32]), Data([0x33])])
    }
 
-   func test_linewiseReader_readsFileLineByLine_asString() throws {
+   func test_lineByLineReader_readsFileLineByLine_asString() throws {
       let fileURL = try XCTUnwrap(
          Bundle.module.url(forResource: "Data", withExtension: "txt")
       )
-      let reader = try XCTUnwrap(LinewiseReader(fileURL: fileURL))
+      let reader = try XCTUnwrap(LineByLineReader(fileURL: fileURL))
       var lines: [String] = []
       while let line: String = reader.readLine() {
          lines.append(line)
