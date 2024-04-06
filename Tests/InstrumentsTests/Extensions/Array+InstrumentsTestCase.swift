@@ -25,7 +25,7 @@
 import Instruments
 import XCTest
 
-final class ArrayInstrumentsTestCase: XCTestCase {
+class ArrayInstrumentsTestCase: XCTestCase {
    func test_array_isBatched_ifCountIsMultipleByBatchSize() {
       let array = [1, 2, 3, 4, 5, 6]
       let batched = array.batch(by: 3)

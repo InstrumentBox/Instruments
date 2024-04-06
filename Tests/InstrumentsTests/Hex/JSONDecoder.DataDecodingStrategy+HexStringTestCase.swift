@@ -25,7 +25,7 @@
 import Instruments
 import XCTest
 
-final class JSONDecoderDataDecodingStrategyHexStringTestCase: XCTestCase {
+class JSONDecoderDataDecodingStrategyHexStringTestCase: XCTestCase {
    func test_jsonDecoder_decodesDataFromHexString() throws {
       let jsonData = try XCTUnwrap(#"{"data": "abcdef"}"#.data(using: .utf8))
       let decoder = JSONDecoder()

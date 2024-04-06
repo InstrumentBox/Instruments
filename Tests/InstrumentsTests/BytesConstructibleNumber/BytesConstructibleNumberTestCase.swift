@@ -25,7 +25,7 @@
 import Instruments
 import XCTest
 
-final class BytesConstructibleNumberTestCase: XCTestCase {
+class BytesConstructibleNumberTestCase: XCTestCase {
    func test_int_isInitializedFromData_withBigEndianness() {
       let data = Data([0x00, 0x01])
       let value = Int(data: data, endianness: .big)

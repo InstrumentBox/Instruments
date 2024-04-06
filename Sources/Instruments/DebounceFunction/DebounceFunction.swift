@@ -34,7 +34,7 @@ public enum DebounceFunctionConfiguration {
 /// A function that allows you to debounce some work. It invokes action after a certain amount time
 /// if there's no new calls during this time. Can be called dynamically due to `@dynamicCallable`.
 @dynamicCallable
-public final class DebounceFunction<Argument> {
+public class DebounceFunction<Argument> {
    private var timer: Timer?
 
    private let debounceInterval: TimeInterval
