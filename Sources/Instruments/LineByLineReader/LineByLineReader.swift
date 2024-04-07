@@ -24,7 +24,7 @@
 
 import Foundation
 
-@available(*, deprecated, renamed: "LineByLineReader", message: "use `LineByLineReader` instead")
+@available(*, deprecated, renamed: "LineByLineReader", message: "Use `LineByLineReader` instead")
 public typealias LinewiseReader = LineByLineReader
 
 /// A reader that reads file line by line by using given delimiter.

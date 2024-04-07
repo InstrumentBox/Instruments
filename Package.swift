@@ -24,7 +24,7 @@
 //  THE SOFTWARE.
 //
 
-
+import CompilerPluginSupport
 import PackageDescription
 
 let package = Package(
@@ -39,11 +39,25 @@ let package = Package(
    products: [
       .library(name: "Instruments", targets: ["Instruments"])
    ],
+   dependencies: [
+      .package(url: "https://github.com/apple/swift-syntax.git", from: "510.0.0")
+   ],
    targets: [
-      .target(name: "Instruments"),
+      .target(name: "Instruments", dependencies: ["InstrumentsMacros"]),
+      .macro(
+         name: "InstrumentsMacros",
+         dependencies: [
+            .product(name: "SwiftSyntaxMacros", package: "swift-syntax"),
+            .product(name: "SwiftCompilerPlugin", package: "swift-syntax")
+         ]
+      ),
       .testTarget(
          name: "InstrumentsTests",
-         dependencies: ["Instruments"],
+         dependencies: [
+            "Instruments",
+            "InstrumentsMacros",
+            .product(name: "SwiftSyntaxMacrosTestSupport", package: "swift-syntax")
+         ],
          resources: [
             .process("LineByLineReader/Data.txt")
          ]
