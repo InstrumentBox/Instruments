@@ -22,5 +22,9 @@ development.
 - ``SecureRandom``
 - ``SecureRandomError``
 - ``Timer``
+- ``LineByLineReader``
 - ``LinewiseReader``
-- <doc:Extensions>
+- ``Enum()``
+- ``Foundation``
+- ``Swift``
+- ``_Concurrency``
