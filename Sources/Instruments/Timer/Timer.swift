@@ -38,6 +38,8 @@ public class Timer {
 
    private var state: State = .notRunning
 
+   // MARK: -
+
    private let interval: TimeInterval
    private let repeats: Bool
    private let queue: DispatchQueue?
@@ -69,6 +71,10 @@ public class Timer {
    }
 
    deinit {
+      if timer == nil {
+         return
+      }
+
       // If the timer is suspended, calling cancel without resuming triggers a crash. This is
       // documented here https://forums.developer.apple.com/thread/15902
       timer?.setEventHandler { }
