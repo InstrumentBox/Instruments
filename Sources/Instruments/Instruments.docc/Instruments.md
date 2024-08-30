@@ -19,6 +19,7 @@ development.
 - ``HexStringDataDecoderError``
 - ``LLDB``
 - ``WeakShared``
+- ``Pointer``
 - ``SecureRandom``
 - ``SecureRandomError``
 - ``Timer``
