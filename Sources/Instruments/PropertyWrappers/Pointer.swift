@@ -37,7 +37,7 @@
 ///       _b = b
 ///    }
 ///
-///    func update(_ b: Pointer<B?>) {
+///    func update() {
 ///       b = B()
 ///    }
 /// }
