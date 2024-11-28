@@ -26,7 +26,7 @@ import Foundation
 
 extension Data {
    /// Options for converting `Data` to hexadecimal string.
-   public struct HexStringOptions: OptionSet {
+   public struct HexStringOptions: OptionSet, Sendable {
       /// The corresponding value of the raw type.
       public var rawValue: Int
 

@@ -72,7 +72,7 @@ private enum ServiceError: Error {
    case thrown
 }
 
-private class Service {
+private class Service: @unchecked Sendable {
    private var isErrorThrown = false
    private let throwsError: Bool
 

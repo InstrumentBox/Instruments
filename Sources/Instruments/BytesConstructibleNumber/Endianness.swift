@@ -25,7 +25,7 @@
 import Foundation
 
 /// An order of bytes which can be either `BE` or `LE`.
-public enum Endianness {
+public enum Endianness: Sendable {
    /// An order of bytes from the most significant to the least significant one.
    case big
 

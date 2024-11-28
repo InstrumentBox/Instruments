@@ -28,13 +28,14 @@ import Foundation
 public enum DebounceFunctionConfiguration {
    /// A global debounce interval which is used as default value every time you create an instance
    /// of `DebounceFunction`. Defaults to `0.5`.
+   nonisolated(unsafe)
    public static var debounceInterval: TimeInterval = 0.5
 }
 
 /// A function that allows you to debounce some work. It invokes action after a certain amount time
 /// if there's no new calls during this time. Can be called dynamically due to `@dynamicCallable`.
 @dynamicCallable
-public class DebounceFunction<Argument> {
+public class DebounceFunction<Argument>: @unchecked Sendable {
    private var timer: Timer?
 
    private let debounceInterval: TimeInterval

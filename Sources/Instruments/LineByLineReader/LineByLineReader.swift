@@ -28,7 +28,7 @@ import Foundation
 public typealias LinewiseReader = LineByLineReader
 
 /// A reader that reads file line by line by using given delimiter.
-public class LineByLineReader {
+public class LineByLineReader: @unchecked Sendable {
    /// A delimiter to use to break lines. Defaults to `\n`.
    public var lineDelimiter = "\n"
 

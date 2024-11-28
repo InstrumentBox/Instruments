@@ -54,7 +54,7 @@
 /// }
 /// ```
 @propertyWrapper
-public class Pointer<Pointee> {
+public class Pointer<Pointee>: @unchecked Sendable {
    /// Existing instance of pointee.
    public var pointee: Pointee
 

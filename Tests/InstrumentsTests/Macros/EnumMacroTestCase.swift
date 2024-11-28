@@ -65,7 +65,7 @@ class EnumMacroTestCase: XCTestCase {
          }
 
          extension Some : Equatable {
-             static func == (lhs: Self, rhs: Self) -> Bool {
+             static func ==(lhs: Self, rhs: Self) -> Bool {
                  return lhs.rawValue == rhs.rawValue
              }
          }
@@ -110,7 +110,7 @@ class EnumMacroTestCase: XCTestCase {
          }
 
          extension Some : Equatable {
-             public static func == (lhs: Self, rhs: Self) -> Bool {
+             public static func ==(lhs: Self, rhs: Self) -> Bool {
                  return lhs.rawValue == rhs.rawValue
              }
          }

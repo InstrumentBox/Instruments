@@ -1,4 +1,4 @@
-// swift-tools-version:5.10
+// swift-tools-version:6.0
 
 //
 //  Package.swift
@@ -40,7 +40,7 @@ let package = Package(
       .library(name: "Instruments", targets: ["Instruments"])
    ],
    dependencies: [
-      .package(url: "https://github.com/apple/swift-syntax.git", from: "510.0.0")
+      .package(url: "https://github.com/apple/swift-syntax.git", from: "600.0.0")
    ],
    targets: [
       .target(name: "Instruments", dependencies: ["InstrumentsMacros"]),

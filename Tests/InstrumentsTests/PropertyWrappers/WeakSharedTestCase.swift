@@ -27,27 +27,31 @@ import XCTest
 
 class WeakSharedTestCase: XCTestCase {
    func test_weakShared_returnsTheSameObject_whenRefExists() {
-      let instance1: TestWeakSingleton = .shared
-      let instance2: TestWeakSingleton = .shared
+      let provider = TestWeakSingletonProvider()
+      let instance1 = provider.weakSingleton
+      let instance2 = provider.weakSingleton
       XCTAssertTrue(instance1 === instance2)
    }
 
    func test_weakShared_returnsNewObject_whenRefNullified() throws {
-      var instance: TestWeakSingleton? = .shared
+      let provider = TestWeakSingletonProvider()
+      var instance: TestWeakSingleton? = provider.weakSingleton
       instance?.value = 42
 
       XCTAssertEqual(instance?.value, 42)
 
       instance = nil
-      instance = .shared
+      instance = provider.weakSingleton
 
       XCTAssertNil(instance?.value)
    }
 }
 
-private class TestWeakSingleton {
+private class TestWeakSingletonProvider: @unchecked Sendable {
    @WeakShared(instance: TestWeakSingleton())
-   static var shared
+   var weakSingleton
+}
 
+private class TestWeakSingleton: @unchecked Sendable {
    var value: Int?
 }
