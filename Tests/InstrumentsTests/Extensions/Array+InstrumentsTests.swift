@@ -1,5 +1,5 @@
 //
-//  BytesConstructibleNumberTestCase.swift
+//  Array+InstrumentsTests.swift
 //
 //  Copyright © 2022 Aleksei Zaikin.
 //
@@ -23,30 +23,23 @@
 //
 
 import Instruments
-import XCTest
+import Testing
 
-class BytesConstructibleNumberTestCase: XCTestCase {
-   func test_int_isInitializedFromData_withBigEndianness() {
-      let data = Data([0x00, 0x01])
-      let value = Int(data: data, endianness: .big)
-      XCTAssertEqual(value, 1)
+@Suite("Array + Instruments")
+struct ArrayInstrumentsTests {
+   @Test("Is batched if count is multiplied by batch size")
+   func batchWithCountDivisibleByBatchSize() async throws {
+      let array = [1, 2, 3, 4, 5, 6]
+      let batched = array.batch(by: 3)
+      let expected = [[1, 2, 3], [4, 5, 6]]
+      #expect(batched == expected)
    }
 
-   func test_int_isInitializedFromData_withLittleEndianness() {
-      let data = Data([0x00, 0x01])
-      let value = Int(data: data, endianness: .little)
-      XCTAssertEqual(value, 256)
-   }
-
-   func test_uint_isInitializedFromData_withBigEndianness() {
-      let data = Data([0x00, 0x01])
-      let value = UInt(data: data, endianness: .big)
-      XCTAssertEqual(value, 1)
-   }
-
-   func test_uint_isInitializedFromData_withLittleEndianness() {
-      let data = Data([0x00, 0x01])
-      let value = UInt(data: data, endianness: .little)
-      XCTAssertEqual(value, 256)
+   @Test("Is batched if count is not multiplied by batch size")
+   func batchWithCountNotDivisibleByBatchSize() async throws {
+      let array = [1, 2, 3, 4, 5]
+      let batched = array.batch(by: 3)
+      let expected = [[1, 2, 3], [4, 5]]
+      #expect(batched == expected)
    }
 }

@@ -28,22 +28,6 @@ import Foundation
 public enum HexStringDataDecoderError: Error, Equatable {
    /// Thrown if unexpected byte is found. E.g. `abxycd` has unexpected byte `xy`.
    case unexpectedByte(String, location: Int)
-
-   // MARK: - Equatable
-
-   /// Compares two instances of `HexStringDataDecoderError`. Both value and location of byte MUST
-   /// be equal.
-   ///
-   /// - Parameters:
-   ///   - lhs: The first instance to compare.
-   ///   - rhs: The second instance to compare.
-   /// - Returns: `true` if instances are equal. Otherwise `false`.
-   public static func ==(lhs: HexStringDataDecoderError, rhs: HexStringDataDecoderError) -> Bool {
-      switch (lhs, rhs) {
-         case let (.unexpectedByte(lhsByte, lhsLocation), .unexpectedByte(rhsByte, rhsLocation)):
-            return lhsByte == rhsByte && lhsLocation == rhsLocation
-      }
-   }
 }
 
 /// A decoder that takes a hexadecimal string as input and returns an instance of `Data`.

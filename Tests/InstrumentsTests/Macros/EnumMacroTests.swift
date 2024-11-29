@@ -1,5 +1,5 @@
 //
-//  EnumMacroTestCase.swift
+//  EnumMacroTests.swift
 //
 //  Copyright © 2024 Aleksei Zaikin.
 //
@@ -27,7 +27,7 @@
 import InstrumentsMacros
 import SwiftSyntaxMacros
 import SwiftSyntaxMacrosTestSupport
-import XCTest
+import Testing
 
 let testMacros: [String: any Macro.Type] = [
    "Enum": EnumMacro.self
@@ -35,8 +35,10 @@ let testMacros: [String: any Macro.Type] = [
 
 // MARK: -
 
-class EnumMacroTestCase: XCTestCase {
-   func test_enumMacro_isExpandedSuccessfully() {
+@Suite("Enum macro")
+struct EnumMacroTests {
+   @Test("Is expanded successfully")
+   func expandSuccessfully() async throws {
       assertMacroExpansion(
          """
          @Enum<String>
@@ -81,7 +83,8 @@ class EnumMacroTestCase: XCTestCase {
       )
    }
 
-   func test_enumMacro_appliesPublicKeyword_ifStructIsPublic() {
+   @Test("Is expanded with public keyword if struct is public")
+   func expandWithPublicKeyword() async throws {
       assertMacroExpansion(
          """
          @Enum<String>
@@ -126,7 +129,8 @@ class EnumMacroTestCase: XCTestCase {
       )
    }
 
-   func test_enumMacro_throwsError_ifAppliedToNotStruct() {
+   @Test("Throws error if applied to not to struct")
+   func expandWhenAppliedToNotStruct() async throws {
       assertMacroExpansion(
          """
          @Enum<String>

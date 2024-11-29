@@ -1,5 +1,5 @@
 //
-//  DebounceFunctionTestCase.swift
+//  DebounceFunctionTests.swift
 //
 //  Copyright © 2022 Aleksei Zaikin.
 //
@@ -23,10 +23,13 @@
 //
 
 import Instruments
+import Testing
 import XCTest
 
-class DebounceFunctionTestCase: XCTestCase {
-   func test_debounceFunction_invokesActionAfterDebounceInterval() {
+@Suite("Debounce function")
+struct DebounceFunctionTests {
+   @Test("Invokes action after debounce interval")
+   func invokeAfterDebounceInterval() async throws {
       let expectation = XCTestExpectation()
       let function = DebounceFunction<Void> {
          expectation.fulfill()
@@ -34,10 +37,11 @@ class DebounceFunctionTestCase: XCTestCase {
 
       function(())
 
-      XCTAssertEqual(XCTWaiter.wait(for: [expectation], timeout: 0.55), .completed)
+      await #expect(XCTWaiter.fulfillment(of: [expectation], timeout: 0.55) == .completed)
    }
 
-   func test_debounceFunction_doesNotInvokeAction_ifCancelled() {
+   @Test("Doesn't invoke action if cancelled")
+   func cancelFunction() async throws {
       let expectation = XCTestExpectation()
       let function = DebounceFunction<Void> {
          expectation.fulfill()
@@ -46,10 +50,11 @@ class DebounceFunctionTestCase: XCTestCase {
       function(())
       function.cancel()
 
-      XCTAssertEqual(XCTWaiter.wait(for: [expectation], timeout: 0.55), .timedOut)
+      await #expect(XCTWaiter.fulfillment(of: [expectation], timeout: 0.55) == .timedOut)
    }
 
-   func test_debounceFunction_doesNotInvokeActionEarlierThanDebounceInterval() {
+   @Test("Doesn't invoke action earlier than debounce interval")
+   func earlierThanInterval() async throws {
       let expectation = XCTestExpectation()
       let function = DebounceFunction<Void> {
          expectation.fulfill()
@@ -57,10 +62,11 @@ class DebounceFunctionTestCase: XCTestCase {
 
       function(())
 
-      XCTAssertEqual(XCTWaiter.wait(for: [expectation], timeout: 0.45), .timedOut)
+      await #expect(XCTWaiter.fulfillment(of: [expectation], timeout: 0.35) == .timedOut)
    }
 
-   func test_debounceFunction_invokesActionWithLatestArgument() {
+   @Test("Invokes actions with latest argument")
+   func invokeWithLatestArgument() async throws {
       let expectation = XCTestExpectation()
       var value: Int?
       let function = DebounceFunction<Int> {
@@ -69,48 +75,71 @@ class DebounceFunctionTestCase: XCTestCase {
       }
 
       function(41)
-      DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+      Task.detached {
+         try await Task.sleep(nanoseconds: 300_000_000)
          function(42)
       }
 
-      XCTAssertEqual(XCTWaiter.wait(for: [expectation], timeout: 0.85), .completed)
-      XCTAssertEqual(value, 42)
+      await #expect(XCTWaiter.fulfillment(of: [expectation], timeout: 0.85) == .completed)
+      #expect(value == 42)
    }
 
-   func test_debounceFunction_firesActionImmediately() {
+   @Test("Fires action")
+   func fireAction() async throws {
       var isInvoked = false
       let function = DebounceFunction<Void> {
          isInvoked = true
       }
 
-      function.fire(with: ())
+      function.fire()
 
-      XCTAssertTrue(isInvoked)
+      #expect(isInvoked)
    }
 
-   func test_debounceFunction_firesActionImmediately_ifAlreadyCalled() {
+   @Test("Files action even if already called")
+   func callAndFireAction() async throws {
       var isInvoked = false
       let function = DebounceFunction<Void> {
          isInvoked = true
       }
 
       function(())
-      function.fire(with: ())
+      function.fire()
 
-      XCTAssertTrue(isInvoked)
+      #expect(isInvoked)
    }
 
-   func test_debounceFunction_doesNotInvokedAction_ifDeallocated() {
+   @Test("Doesn't invoke action if deallocated")
+   func deallocate() async throws {
       let expectation = XCTestExpectation()
-      var function: DebounceFunction<Void>? = DebounceFunction {
-         expectation.fulfill()
+      let keeper = FunctionKeeper(expectation: expectation)
+      await keeper.function?(())
+
+      Task.detached {
+         try await Task.sleep(nanoseconds: 300_000_000)
+         await keeper.cleanUp()
       }
 
-      function?(())
-      DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-         function = nil
-      }
+      await #expect(XCTWaiter.fulfillment(of: [expectation], timeout: 0.55) == .timedOut)
+   }
+}
 
-      XCTAssertEqual(XCTWaiter.wait(for: [expectation], timeout: 0.55), .timedOut)
+// MARK: -
+
+actor FunctionKeeper {
+   let expectation: XCTestExpectation
+
+   init(expectation: XCTestExpectation) {
+      self.expectation = expectation
+   }
+
+   lazy var function: DebounceFunction<Void>? = {
+      DebounceFunction { [weak self] in
+         self?.expectation.fulfill()
+      }
+   }()
+
+   func cleanUp() {
+      function = nil
    }
 }

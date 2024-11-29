@@ -1,5 +1,5 @@
 //
-//  HexStringDataDecoderTestCase.swift
+//  WeakSharedTests.swift
 //
 //  Copyright © 2022 Aleksei Zaikin.
 //
@@ -23,24 +23,40 @@
 //
 
 import Instruments
-import XCTest
+import Testing
 
-class HexStringDataDecoderTestCase: XCTestCase {
-   func test_hexStringDataDecoder_decodesFromHexString() throws {
-      let decoder = HexStringDataDecoder()
-      let data = try decoder.decode("abcdef01")
-      XCTAssertEqual(data, Data([0xAB, 0xCD, 0xEF, 0x01]))
+@Suite("Weak shared")
+struct WeakSharedTests {
+   @Test("Returns the same object when ref exists")
+   func returnTheSameObject() {
+      let provider = TestWeakSingletonProvider()
+      let instance1 = provider.weakSingleton
+      let instance2 = provider.weakSingleton
+      #expect(instance1 === instance2)
    }
 
-   func test_hexStringDataDecoder_throwsError_ifUnexpectedByte() {
-      let decoder = HexStringDataDecoder()
-      do {
-         _ = try decoder.decode("abcdeu01")
-         XCTFail("Unexpected data decoded")
-      } catch let error as HexStringDataDecoderError {
-         XCTAssertEqual(error, .unexpectedByte("eu", location: 2))
-      } catch {
-         XCTFail("Unexpected error thrown \(error)")
-      }
+   @Test("Returns new object when ref nullified")
+   func returnNewInstance() async throws {
+      let provider = TestWeakSingletonProvider()
+      var instance: TestWeakSingleton? = provider.weakSingleton
+      instance?.value = 42
+
+      #expect(instance?.value == 42)
+
+      instance = nil
+      instance = provider.weakSingleton
+
+      #expect(instance?.value == nil)
    }
+}
+
+// MARK: -
+
+private class TestWeakSingletonProvider: @unchecked Sendable {
+   @WeakShared(instance: TestWeakSingleton())
+   var weakSingleton
+}
+
+private class TestWeakSingleton: @unchecked Sendable {
+   var value: Int?
 }

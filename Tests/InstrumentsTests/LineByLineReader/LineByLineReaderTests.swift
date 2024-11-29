@@ -1,5 +1,5 @@
 //
-//  DateFormatter+InstrumentsTestCase.swift
+//  LinewiseReaderTests.swift
 //
 //  Copyright © 2022 Aleksei Zaikin.
 //
@@ -22,16 +22,35 @@
 //  THE SOFTWARE.
 //
 
+import Foundation
 import Instruments
-import XCTest
+import Testing
 
-class DateFormatterInstrumentsTestCase: XCTestCase {
-   func test_formatter_returnsCorrectString() {
-      let date = Date(timeIntervalSince1970: 0)
-      let expectedString = "1970-01-01T03:00:00+0300"
-      let formatter: DateFormatter = .iso8601
-      formatter.timeZone = TimeZone(secondsFromGMT: 10800)
+@Suite("Line by line reader")
+struct LineByLineReaderTests {
+   @Test("Reads line by line as data")
+   func readData() async throws {
+      let fileURL = try #require(
+         Bundle.module.url(forResource: "Data", withExtension: "txt")
+      )
+      let reader = try #require(LineByLineReader(fileURL: fileURL))
+      var lines: [Data] = []
+      while let line: Data = reader.readLine() {
+         lines.append(line)
+      }
+      #expect(lines == [Data([0x30]), Data([0x31]), Data([0x32]), Data([0x33])])
+   }
 
-      XCTAssertEqual(formatter.string(from: date), expectedString)
+   @Test("Read line by line as string")
+   func readStrings() async throws {
+      let fileURL = try #require(
+         Bundle.module.url(forResource: "Data", withExtension: "txt")
+      )
+      let reader = try #require(LineByLineReader(fileURL: fileURL))
+      var lines: [String] = []
+      while let line: String = reader.readLine() {
+         lines.append(line)
+      }
+      #expect(lines == ["0", "1", "2", "3"])
    }
 }

@@ -1,5 +1,5 @@
 //
-//  String+InstrumentsTestCase.swift
+//  String+InstrumentsTests.swift
 //
 //  Copyright © 2022 Aleksei Zaikin.
 //
@@ -23,28 +23,33 @@
 //
 
 import Instruments
-import XCTest
+import Testing
 
-class StringInstrumentsTestCase: XCTestCase {
-   func test_string_isEncodedIntoBase64() {
+@Suite("String + Instruments")
+struct StringInstrumentsTests {
+   @Test("Is encoded to base 64")
+   func encodeToBase64() async throws {
       let encoded = "hello world".base64Encoded()
-      XCTAssertEqual(encoded, "aGVsbG8gd29ybGQ=")
+      #expect(encoded == "aGVsbG8gd29ybGQ=")
    }
 
-   func test_string_isDecodedFromBase64() {
+   @Test("Is decoded from base 64")
+   func decodeFromBase64() async throws {
       let decoded = "aGVsbG8gd29ybGQ=".base64Decoded()
-      XCTAssertEqual(decoded, "hello world")
+      #expect(decoded == "hello world")
    }
 
-   func test_string_removesCharactersContainingInCharacterSet() {
+   @Test("Removes characters contained in character set")
+   func removeCharsFromSet() async throws {
       var string = "0h1e2l3l4o 5w6o7r8l9d"
       string.removeCharacters(in: .decimalDigits)
-      XCTAssertEqual(string, "hello world")
+      #expect(string == "hello world")
    }
 
-   func test_string_removesPrefix() {
+   @Test("Removes prefix")
+   func removePrefix() async throws {
       var string = "foo_bar_baz"
       string.removePrefix("foo_")
-      XCTAssertEqual(string, "bar_baz")
+      #expect(string == "bar_baz")
    }
 }

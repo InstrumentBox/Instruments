@@ -1,5 +1,5 @@
 //
-//  LinewiseReaderTestCase.swift
+//  JSONDecoder.DataDecodingStrategy+HexStringTests.swift
 //
 //  Copyright © 2022 Aleksei Zaikin.
 //
@@ -22,31 +22,24 @@
 //  THE SOFTWARE.
 //
 
+import Foundation
 import Instruments
-import XCTest
+import Testing
 
-class LineByLineReaderTestCase: XCTestCase {
-   func test_lineByLineReader_readsFileLineByLine_asData() throws {
-      let fileURL = try XCTUnwrap(
-         Bundle.module.url(forResource: "Data", withExtension: "txt")
-      )
-      let reader = try XCTUnwrap(LineByLineReader(fileURL: fileURL))
-      var lines: [Data] = []
-      while let line: Data = reader.readLine() {
-         lines.append(line)
-      }
-      XCTAssertEqual(lines, [Data([0x30]), Data([0x31]), Data([0x32]), Data([0x33])])
+@Suite("JSON decoder data decoding strategy + Hex string")
+struct JSONDecoderDataDecodingStrategyHexStringTests {
+   @Test("Decodes data from hex string")
+   func decodeHexString() async throws {
+      let jsonData = try #require(#"{"data": "abcdef"}"#.data(using: .utf8))
+      let decoder = JSONDecoder()
+      decoder.dataDecodingStrategy = .hexString
+      let entity = try decoder.decode(Entity.self, from: jsonData)
+      #expect(entity.data == Data([0xAB, 0xCD, 0xEF]))
    }
+}
 
-   func test_lineByLineReader_readsFileLineByLine_asString() throws {
-      let fileURL = try XCTUnwrap(
-         Bundle.module.url(forResource: "Data", withExtension: "txt")
-      )
-      let reader = try XCTUnwrap(LineByLineReader(fileURL: fileURL))
-      var lines: [String] = []
-      while let line: String = reader.readLine() {
-         lines.append(line)
-      }
-      XCTAssertEqual(lines, ["0", "1", "2", "3"])
-   }
+// MARK: -
+
+private struct Entity: Decodable {
+   let data: Data
 }

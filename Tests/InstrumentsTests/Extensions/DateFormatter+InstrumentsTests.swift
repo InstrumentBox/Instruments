@@ -1,5 +1,5 @@
 //
-//  Array+InstrumentsTestCase.swift
+//  DateFormatter+InstrumentsTests.swift
 //
 //  Copyright © 2022 Aleksei Zaikin.
 //
@@ -22,21 +22,19 @@
 //  THE SOFTWARE.
 //
 
+import Foundation
 import Instruments
-import XCTest
+import Testing
 
-class ArrayInstrumentsTestCase: XCTestCase {
-   func test_array_isBatched_ifCountIsMultipleByBatchSize() {
-      let array = [1, 2, 3, 4, 5, 6]
-      let batched = array.batch(by: 3)
-      let expected = [[1, 2, 3], [4, 5, 6]]
-      XCTAssertEqual(batched, expected)
-   }
+@Suite("Date formatter + Instruments")
+struct DateFormatterInstrumentsTests {
+   @Test("Returns correct string")
+   func convertToCorrectString() async throws {
+      let date = Date(timeIntervalSince1970: 0)
+      let expectedString = "1970-01-01T03:00:00+0300"
+      let formatter: DateFormatter = .iso8601
+      formatter.timeZone = TimeZone(secondsFromGMT: 10800)
 
-   func test_array_isBatched_ifCountIsNotMultipleByBatchSize() {
-      let array = [1, 2, 3, 4, 5]
-      let batched = array.batch(by: 3)
-      let expected = [[1, 2, 3], [4, 5]]
-      XCTAssertEqual(batched, expected)
+      #expect(formatter.string(from: date) == expectedString)
    }
 }
