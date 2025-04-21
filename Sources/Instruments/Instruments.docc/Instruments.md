@@ -5,7 +5,7 @@ development.
 
 ## Topics
 
-### Installation
+### Getting Started
 
 - <doc:Installation>
 
@@ -26,6 +26,7 @@ development.
 - ``LineByLineReader``
 - ``LinewiseReader``
 - ``UnfairLock``
+- ``DelegatePool``
 - ``Enum()``
 - ``Foundation``
 - ``Swift``

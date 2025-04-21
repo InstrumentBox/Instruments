@@ -83,7 +83,7 @@ extension BytesConstructibleNumber {
    /// in case of LE it adds bytes in the end.
    /// 
    /// - Parameters:
-   ///   - data: An array of bytes that will be used to initialize a number.
+   ///   - bytes: An array of bytes that will be used to initialize a number.
    ///   - endianness: An endianness to be used to initialize a number. Defaults to `.big`.
    public init(bytes: [UInt8], endianness: Endianness = .big) {
       self.init(data: Data(bytes), endianness: endianness)
