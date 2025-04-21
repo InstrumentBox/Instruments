@@ -33,7 +33,9 @@ extension DelegatePool {
 
       init(delegatePool: DelegatePool) {
          self.delegatePool = delegatePool
-         index = delegatePool.delegates.count - 1
+         index = delegatePool.lock.withLock {
+            delegatePool.delegates.count - 1
+         }
       }
 
       // MARK: - Iteration
