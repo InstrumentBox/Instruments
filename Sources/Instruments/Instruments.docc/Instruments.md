@@ -25,6 +25,7 @@ development.
 - ``Timer``
 - ``LineByLineReader``
 - ``LinewiseReader``
+- ``UnfairLock``
 - ``Enum()``
 - ``Foundation``
 - ``Swift``
