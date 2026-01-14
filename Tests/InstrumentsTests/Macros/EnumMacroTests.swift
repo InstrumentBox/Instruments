@@ -29,12 +29,14 @@ import SwiftSyntaxMacros
 import SwiftSyntaxMacrosTestSupport
 import Testing
 
+@MainActor
 let testMacros: [String: any Macro.Type] = [
    "Enum": EnumMacro.self
 ]
 
 // MARK: -
 
+@MainActor
 @Suite("Enum macro")
 struct EnumMacroTests {
    @Test("Is expanded successfully")

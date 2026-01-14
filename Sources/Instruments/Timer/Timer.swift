@@ -129,9 +129,9 @@ public class Timer {
             return
          }
 
-         self.action()
-         if !self.repeats {
-            self.cancel()
+         action()
+         if !repeats {
+            cancel()
          }
       }
       timer.schedule(
