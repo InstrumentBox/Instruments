@@ -1,7 +1,7 @@
 //
-//  InstrumentsMacrosPlugin.swift
+//  SynchronizedMacro.swift
 //
-//  Copyright © 2024 Aleksei Zaikin.
+//  Copyright © 2026 Aleksei Zaikin.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -22,14 +22,26 @@
 //  THE SOFTWARE.
 //
 
-import SwiftCompilerPlugin
+import SwiftSyntax
 import SwiftSyntaxMacros
 
-@main
-struct InstrumentsMacrosPlugin: CompilerPlugin {
-   let providingMacros: [any Macro.Type] = [
-      AtomicMacro.self,
-      EnumMacro.self,
-      SynchronizedMacro.self
-   ]
+public struct SynchronizedMacro: BodyMacro {
+   public static func expansion(
+      of node: AttributeSyntax,
+      providingBodyFor declaration: some DeclSyntaxProtocol & WithOptionalCodeBlockSyntax,
+      in context: some MacroExpansionContext
+   ) throws -> [CodeBlockItemSyntax] {
+      guard let body = declaration.body, body.statements.count > 0 else {
+         return []
+      }
+
+      return [
+         CodeBlockItemSyntax("var __objc_sync_res = objc_sync_enter(self)"),
+         CodeBlockItemSyntax("assert(__objc_sync_res == OBJC_SYNC_SUCCESS, \"Couldn't acquire lock on <\\(type(of: self)): \\(Unmanaged.passUnretained(self).toOpaque())>\")"),
+         CodeBlockItemSyntax("defer {"),
+         CodeBlockItemSyntax("__objc_sync_res = objc_sync_exit(self)"),
+         CodeBlockItemSyntax("assert(__objc_sync_res == OBJC_SYNC_SUCCESS, \"Couldn't free lock on <\\(type(of: self)): \\(Unmanaged.passUnretained(self).toOpaque())>\")"),
+         CodeBlockItemSyntax("}")
+      ] + body.statements
+   }
 }

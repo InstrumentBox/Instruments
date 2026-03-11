@@ -1,7 +1,7 @@
 //
-//  InstrumentsMacrosPlugin.swift
+//  SynchronizedMacro.swift
 //
-//  Copyright © 2024 Aleksei Zaikin.
+//  Copyright © 2026 Aleksei Zaikin.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -22,14 +22,10 @@
 //  THE SOFTWARE.
 //
 
-import SwiftCompilerPlugin
-import SwiftSyntaxMacros
-
-@main
-struct InstrumentsMacrosPlugin: CompilerPlugin {
-   let providingMacros: [any Macro.Type] = [
-      AtomicMacro.self,
-      EnumMacro.self,
-      SynchronizedMacro.self
-   ]
-}
+/// Wraps function's body in `objc_sync_enter` and `objc_sync_exit`. Does nothing if function's
+/// body is empty.
+///
+/// Works only with functions inside of classes. Doesn't work in structs. Doesn't make sense in
+/// actors.
+@attached(body)
+public macro Synchronized() = #externalMacro(module: "InstrumentsMacros", type: "SynchronizedMacro")

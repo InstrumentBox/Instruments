@@ -1,7 +1,7 @@
 //
-//  InstrumentsMacrosPlugin.swift
+//  AtomicMacro.swift
 //
-//  Copyright © 2024 Aleksei Zaikin.
+//  Copyright © 2026 Aleksei Zaikin.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -22,14 +22,12 @@
 //  THE SOFTWARE.
 //
 
-import SwiftCompilerPlugin
-import SwiftSyntaxMacros
 
-@main
-struct InstrumentsMacrosPlugin: CompilerPlugin {
-   let providingMacros: [any Macro.Type] = [
-      AtomicMacro.self,
-      EnumMacro.self,
-      SynchronizedMacro.self
-   ]
-}
+/// Generates private variable and getter and setter that use `objc_sync_enter` and `objc_sync_exit`
+/// to make read and write operations atomic.
+///
+/// Applicable to only variable declarations in classes, and doesn't make sense
+/// if applied to constants, or variables in actors. Also it doesn't work in structs.
+@attached(peer, names: prefixed(__))
+@attached(accessor, names: named(init), named(get), named(set))
+public macro Atomic() = #externalMacro(module: "InstrumentsMacros", type: "AtomicMacro")

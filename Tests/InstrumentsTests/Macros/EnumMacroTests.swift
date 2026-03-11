@@ -30,7 +30,7 @@ import SwiftSyntaxMacrosTestSupport
 import Testing
 
 @MainActor
-let testMacros: [String: any Macro.Type] = [
+private let testMacros: [String: any Macro.Type] = [
    "Enum": EnumMacro.self
 ]
 
