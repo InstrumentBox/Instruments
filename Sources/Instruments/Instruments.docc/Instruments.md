@@ -28,6 +28,8 @@ development.
 - ``UnfairLock``
 - ``DelegatePool``
 - ``Enum()``
+- ``Atomic()``
+- ``Synchronized()``
 - ``Foundation``
 - ``Swift``
 - ``_Concurrency``
