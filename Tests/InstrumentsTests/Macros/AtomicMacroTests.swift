@@ -118,6 +118,45 @@ struct AtomicMacroTests {
    }
 
    @Test(
+      "Is expanded successfully with weak option",
+      .disabled("Testing macro expansion always succeed, at least in Xcode 26.3")
+   )
+   func expandWeak() async throws {
+      assertMacroExpansion(
+         """
+         @Atomic(.weak)
+         var foo: NSObject?
+         """,
+         expandedSource: """
+         var foo: NSObject? {
+         {
+             @storageRestrictions(initializes: __foo)
+             init {
+                 __foo = newValue
+             }
+             get {
+                var __objc_sync_res = objc_sync_enter(self)
+                assert(__objc_sync_res == OBJC_SYNC_SUCCESS, "Couldn't acquire lock on <\\(type(of: self)): \\(Unmanaged.passUnretained(self).toOpaque())>")
+                let retVal = __foo
+                __objc_sync_res = objc_sync_exit(self)
+                assert(__objc_sync_res == OBJC_SYNC_SUCCESS, "Couldn't free lock on <\\(type(of: self)): \\(Unmanaged.passUnretained(self).toOpaque())>")
+                return retVal
+             }
+             set {
+                var __objc_sync_res = objc_sync_enter(self)
+                assert(__objc_sync_res == OBJC_SYNC_SUCCESS, "Couldn't acquire lock on <\\(type(of: self)): \\(Unmanaged.passUnretained(self).toOpaque())>")
+                __foo = newValue
+                __objc_sync_res = objc_sync_exit(self)
+                assert(__objc_sync_res == OBJC_SYNC_SUCCESS, "Couldn't free lock on <\\(type(of: self)): \\(Unmanaged.passUnretained(self).toOpaque())>")
+             }
+         }
+         private weak var __foo: NSObject?
+         """,
+         macros: testMacros
+      )
+   }
+
+   @Test(
       "Is expanded successfully with initialized variable",
       .disabled("Testing macro expansion always succeed, at least in Xcode 26.3")
    )

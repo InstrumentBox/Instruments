@@ -38,15 +38,25 @@ public struct AtomicMacro: PeerMacro, AccessorMacro {
          return []
       }
 
+      let weakKeyword = if
+         let args = node.arguments?.as(LabeledExprListSyntax.self),
+         let expr = args.first?.expression.as(MemberAccessExprSyntax.self),
+         expr.declName.baseName.text == "weak"
+      {
+         "weak "
+      } else {
+         ""
+      }
+
       if let typeName = b.typeAnnotation?.type.as(IdentifierTypeSyntax.self)?.name.text {
-         return [DeclSyntax("private var __\(raw: varName): \(raw: typeName)")]
+         return [DeclSyntax("private \(raw: weakKeyword)var __\(raw: varName): \(raw: typeName)")]
       }
 
       if
          let optType = b.typeAnnotation?.type.as(OptionalTypeSyntax.self),
          let typeName = optType.wrappedType.as(IdentifierTypeSyntax.self)?.name.text
       {
-         return [DeclSyntax("private var __\(raw: varName): \(raw: typeName)?")]
+         return [DeclSyntax("private \(raw: weakKeyword)var __\(raw: varName): \(raw: typeName)?")]
       }
 
       return []

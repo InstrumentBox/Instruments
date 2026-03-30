@@ -22,12 +22,35 @@
 //  THE SOFTWARE.
 //
 
+/// Options that allow to modify storage variable of `@Atomic` property.
+public struct AtomicOptions: OptionSet, Sendable {
+   /// Raw value of an option.
+   public var rawValue: Int
+
+   // MARK: - Init
+   
+   /// Returns newly created object that describes an option.
+   ///
+   /// - Parameters:
+   ///   - rawValue: Raw value of option
+   public init(rawValue: Int) {
+      self.rawValue = rawValue
+   }
+
+   // MARK: - Options
+   
+   /// Storage variable will use `weak` modifier. Applicable only with reference types.
+   public static let `weak` = AtomicOptions(rawValue: 1 << 0)
+}
+
 
 /// Generates private variable and getter and setter that use `objc_sync_enter` and `objc_sync_exit`
 /// to make read and write operations atomic.
 ///
 /// Applicable to only variable declarations in classes, and doesn't make sense
 /// if applied to constants, or variables in actors. Also it doesn't work in structs.
+/// - Parameters:
+///   - options: Options to modify variable storage. See ``AtomicOptions`` for more information.
 @attached(peer, names: prefixed(__))
 @attached(accessor, names: named(init), named(get), named(set))
-public macro Atomic() = #externalMacro(module: "InstrumentsMacros", type: "AtomicMacro")
+public macro Atomic(_ options: AtomicOptions = []) = #externalMacro(module: "InstrumentsMacros", type: "AtomicMacro")
