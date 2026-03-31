@@ -33,7 +33,8 @@ public struct AtomicMacro: PeerMacro, AccessorMacro {
    ) throws -> [DeclSyntax] {
       guard
          let b = declaration.as(VariableDeclSyntax.self)?.bindings.first,
-         let varName = b.pattern.as(IdentifierPatternSyntax.self)?.identifier.text
+         let varName = b.pattern.as(IdentifierPatternSyntax.self)?.identifier.text,
+         b.accessorBlock?.accessors == nil
       else {
          return []
       }
@@ -74,31 +75,46 @@ public struct AtomicMacro: PeerMacro, AccessorMacro {
          return []
       }
 
-      return [
-         AccessorDeclSyntax(
-         """
-         @storageRestrictions(initializes: __\(raw: varName))
-         init { __\(raw: varName) = newValue }
-         """),
-         AccessorDeclSyntax("""
-         get {
+      if let codeBlocks = b.accessorBlock?.accessors.as(CodeBlockItemListSyntax.self) {
+         return [
+            AccessorDeclSyntax("""
             var __objc_sync_res = objc_sync_enter(self)
             assert(__objc_sync_res == OBJC_SYNC_SUCCESS, "Couldn't acquire lock on <\\(type(of: self)): \\(Unmanaged.passUnretained(self).toOpaque())>")
-            let retVal = __\(raw: varName)
+            defer {
             __objc_sync_res = objc_sync_exit(self)
             assert(__objc_sync_res == OBJC_SYNC_SUCCESS, "Couldn't free lock on <\\(type(of: self)): \\(Unmanaged.passUnretained(self).toOpaque())>")
-            return retVal
-         }
-         """),
-         AccessorDeclSyntax("""
-         set {
-            var __objc_sync_res = objc_sync_enter(self)
-            assert(__objc_sync_res == OBJC_SYNC_SUCCESS, "Couldn't acquire lock on <\\(type(of: self)): \\(Unmanaged.passUnretained(self).toOpaque())>")
-            __\(raw: varName) = newValue
-            __objc_sync_res = objc_sync_exit(self)
-            assert(__objc_sync_res == OBJC_SYNC_SUCCESS, "Couldn't free lock on <\\(type(of: self)): \\(Unmanaged.passUnretained(self).toOpaque())>")
-         }
-         """)
-      ]
+            }
+            \(codeBlocks)
+            """
+            )
+         ]
+      } else {
+         return [
+            AccessorDeclSyntax(
+            """
+            @storageRestrictions(initializes: __\(raw: varName))
+            init { __\(raw: varName) = newValue }
+            """),
+            AccessorDeclSyntax("""
+            get {
+               var __objc_sync_res = objc_sync_enter(self)
+               assert(__objc_sync_res == OBJC_SYNC_SUCCESS, "Couldn't acquire lock on <\\(type(of: self)): \\(Unmanaged.passUnretained(self).toOpaque())>")
+               let retVal = __\(raw: varName)
+               __objc_sync_res = objc_sync_exit(self)
+               assert(__objc_sync_res == OBJC_SYNC_SUCCESS, "Couldn't free lock on <\\(type(of: self)): \\(Unmanaged.passUnretained(self).toOpaque())>")
+               return retVal
+            }
+            """),
+            AccessorDeclSyntax("""
+            set {
+               var __objc_sync_res = objc_sync_enter(self)
+               assert(__objc_sync_res == OBJC_SYNC_SUCCESS, "Couldn't acquire lock on <\\(type(of: self)): \\(Unmanaged.passUnretained(self).toOpaque())>")
+               __\(raw: varName) = newValue
+               __objc_sync_res = objc_sync_exit(self)
+               assert(__objc_sync_res == OBJC_SYNC_SUCCESS, "Couldn't free lock on <\\(type(of: self)): \\(Unmanaged.passUnretained(self).toOpaque())>")
+            }
+            """)
+         ]
+      }
    }
 }

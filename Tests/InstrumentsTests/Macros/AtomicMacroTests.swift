@@ -157,6 +157,38 @@ struct AtomicMacroTests {
    }
 
    @Test(
+      "Is expanded successfully for computed property",
+      .disabled("Testing macro expansion always succeed, at least in Xcode 26.3")
+   )
+   func expandComputed() async throws {
+      assertMacroExpansion(
+         """
+         @Atomic
+         var foo: NSObject? {
+             doAction()
+             doAnotherAction()
+             return nil
+         }
+         """,
+         expandedSource: """
+         var foo: NSObject? {
+         {
+             var __objc_sync_res = objc_sync_enter(self)
+             assert(__objc_sync_res == OBJC_SYNC_SUCCESS, "Couldn't acquire lock on <\\(type(of: self)): \\(Unmanaged.passUnretained(self).toOpaque())>")
+             defer {
+             __objc_sync_res = objc_sync_exit(self)
+             assert(__objc_sync_res == OBJC_SYNC_SUCCESS, "Couldn't free lock on <\\(type(of: self)): \\(Unmanaged.passUnretained(self).toOpaque())>")
+             }
+             doAction()
+             doAnotherAction()
+             return nil
+         }
+         """,
+         macros: testMacros
+      )
+   }
+
+   @Test(
       "Is expanded successfully with initialized variable",
       .disabled("Testing macro expansion always succeed, at least in Xcode 26.3")
    )
