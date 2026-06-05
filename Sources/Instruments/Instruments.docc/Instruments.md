@@ -31,3 +31,5 @@ development.
 - ``Foundation``
 - ``Swift``
 - ``_Concurrency``
+- ``withCatchingException(execute:)``
+- ``ExceptionError``

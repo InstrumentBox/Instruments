@@ -25,7 +25,7 @@
 import Foundation
 
 /// An error that containing thrown instance of `NSException`.
-public struct ExceptionError: @unchecked Sendable, Error {
+public struct ExceptionError: @unchecked Sendable, Error, Equatable {
    /// An instance of thrown exception.
    public let exception: NSException
 }

@@ -29,7 +29,7 @@ import InstrumentsObjC
 ///
 /// - Parameters:
 ///   - block: A block where bad things might happen.
-/// - Throws: An error that contain thrown exception.
+/// - Throws: An error that contains thrown exception.
 public func withCatchingException(execute block: () -> Void) throws(ExceptionError) {
    var ex: NSException?
    INSWithCatchingExceptionExecuteBlock(block, &ex)
