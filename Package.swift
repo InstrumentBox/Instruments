@@ -43,7 +43,8 @@ let package = Package(
       .package(url: "https://github.com/apple/swift-syntax.git", from: "600.0.0")
    ],
    targets: [
-      .target(name: "Instruments", dependencies: ["InstrumentsMacros"]),
+      .target(name: "Instruments", dependencies: ["InstrumentsMacros", "InstrumentsObjC"]),
+      .target(name: "InstrumentsObjC", packageAccess: true),
       .macro(
          name: "InstrumentsMacros",
          dependencies: [
